@@ -38,7 +38,11 @@ parser_set = {'interest', 'periods', 'principal', 'payment', 'type'}
 args_dict = vars(parser.parse_args())
 args_set = set(key for key in args_dict if args_dict[key])
 command = parser_set - args_set
-if not args_dict['interest'] or (args_dict['type'] == 'diff' and args_dict['payment'] is not None) or len(args_set) < 4:
+neg_input = any(args_dict[key] < 0 for key in (args_set - {'type'}))
+if not args_dict['interest'] \
+        or (args_dict['type'] == 'diff' and args_dict['payment'] is not None) \
+        or neg_input \
+        or len(args_set) < 4:
     print('Incorrect parameters')
 elif args_dict['type'] == 'annuity':
     if 'payment' in command:
